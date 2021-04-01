@@ -165,6 +165,11 @@ class DataManager(private val texts: Texts, private val colors: Colors) {
     }
 
     fun teleport(player: Player, index: Int): Boolean {
+        if (!player.hasPermission("duplist.tp")) {
+            player.sendMessage(texts.onNoPermission())
+            return true
+        }
+
         if (reports.count()>index) {
             val reportData = reports[index]
             val world = Bukkit.getWorld(reportData.world) ?: return false

@@ -6,7 +6,7 @@ class Texts(private val colors: Colors) {
     private val _reasons: Array<String> = arrayOf("duper", "scammer", "ph-falle")
     fun reasons() = _reasons
 
-    private val _permissions: Array<String> = arrayOf("duplist.meldung", "duplist.list", "duplist.op")
+    private val _permissions: Array<String> = arrayOf("duplist.meldung", "duplist.list", "duplist.op", "duplist.tp")
     fun permissions() = _permissions
 
     private val _onReportSuccessful: String =
@@ -31,6 +31,9 @@ class Texts(private val colors: Colors) {
         }
         if (player.hasPermission("duplist.list")) {
             out.appendLine("${colors.getAccentColor()}list${colors.getPrimaryColor()}: Auflisten der Meldungen")
+        }
+        if (player.hasPermission("duplist.tp")) {
+            out.appendLine("${colors.getAccentColor()}teleport${colors.getPrimaryColor()}: Teleportiere dich zu den Koordinaten")
         }
 
         return out.toString()

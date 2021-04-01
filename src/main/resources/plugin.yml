@@ -18,6 +18,7 @@ permissions:
       duplist.op: true
       duplist.list: true
       duplist.meldung: true
+      duplist.tp: true
   duplist.op:
     description: Erlaubt bearbeiten von Rechten
     default: op
@@ -27,4 +28,7 @@ permissions:
   duplist.meldung:
     description: Meldung erstellen
     default: true
+  duplist.tp:
+    description: Teleportiere dich zu den Koordinaten
+    default: op
 
