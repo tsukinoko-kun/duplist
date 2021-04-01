@@ -1,0 +1,11 @@
+name: Duplist
+version: ${project.version}
+main: de.kuerbisskraft.duplist.Duplist
+api-version: 1.15
+prefix: duplist
+authors: [ Frank-Mayer ]
+description: Melde die Verwendung von Duplikationsglitches
+website: https://kuerbisskraft.de
+commands:
+  duplist:
+    description: Duplist
