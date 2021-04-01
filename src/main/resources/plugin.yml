@@ -6,6 +6,25 @@ prefix: duplist
 authors: [ Frank-Mayer ]
 description: Melde die Verwendung von Duplikationsglitches
 website: https://kuerbisskraft.de
+
 commands:
   duplist:
     description: Duplist
+
+permissions:
+  duplist.*:
+    description: Volle Kontrolle der Duplist
+    children:
+      duplist.op: true
+      duplist.list: true
+      duplist.meldung: true
+  duplist.op:
+    description: Erlaubt bearbeiten von Rechten
+    default: op
+  duplist.list:
+    description: Auflisten der Meldungen
+    default: op
+  duplist.meldung:
+    description: Meldung erstellen
+    default: true
+

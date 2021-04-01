@@ -1,10 +1,69 @@
 package de.kuerbisskraft.duplist
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
+import java.lang.reflect.Type
+import java.util.*
+import kotlin.concurrent.timerTask
+import kotlin.math.roundToLong
 
-class DataManager(private val texts: Texts) {
+
+class DataManager(private val texts: Texts, private val colors: Colors) {
+    private val gson = Gson()
     private val reports = mutableListOf<Report>()
+    private val filePath: String
+    private var lastHash: Int = -1
+
+    init {
+        val dir = "plugins/duplist/"
+        filePath = dir + "reports.json"
+        val path = File(dir)
+        if (!path.exists()) {
+            File(dir).mkdirs()
+        }
+
+        val file = File(filePath)
+        if (file.exists()) {
+            // Read File
+            val fr = FileReader(filePath)
+            val json = fr.readText()
+            lastHash = json.hashCode()
+            fr.close()
+
+            // Parse Json
+            val type: Type = object : TypeToken<List<Report>>() {}.type
+            val impArr: List<Report> = gson.fromJson(json, type)
+            for (el in impArr) {
+                reports.add(el)
+            }
+        }
+
+        val tick = Timer()
+        tick.schedule(timerTask {
+            store()
+        }, 5000, 10000)
+    }
+
+    fun store() {
+        val json = gson.toJson(reports)
+        val newHash = json.hashCode()
+
+        if (newHash == lastHash) {
+            return
+        }
+
+        lastHash = newHash
+        val fw = FileWriter(filePath)
+        fw.write(json)
+        fw.close()
+    }
 
     fun report(
         reporter: CommandSender,
@@ -14,6 +73,11 @@ class DataManager(private val texts: Texts) {
         reason: String,
         value: String
     ): Boolean {
+        if (!reporter.hasPermission("duplist.meldung")) {
+            reporter.sendMessage(texts.onNoPermission())
+            return true
+        }
+
         if (!texts.reasons().contains(reason)) {
             return false
         }
@@ -43,28 +107,52 @@ class DataManager(private val texts: Texts) {
             return false
         }
 
-        return report(x, y, z, reason, v)
-    }
-
-    private fun report(locX: Double, locY: Double, locZ: Double, reason: String, value: Double): Boolean {
-        return reports.add(
-            Report(
-                locX, locY, locZ, reason, value
+        if (report(
+                x, y, z, reason, v, if (reporterLocation.world != null) {
+                    reporterLocation.world!!.name
+                } else {
+                    return false
+                }
             )
-        )
+        ) {
+            reporter.sendMessage(texts.onReportSuccessful())
+            return true
+        }
+
+        return false
     }
 
-    fun list(amount: Int = 8): String {
+    private fun report(locX: Double, locY: Double, locZ: Double, reason: String, value: Double, world: String): Boolean {
+        if (reports.add(
+                Report(
+                    locX, locY, locZ, reason, value, world
+                )
+            )
+        ) {
+//            reports.sortedByDescending {
+//                it.value
+//            }
+            return true
+        }
+        return false
+    }
+
+    fun list(player: CommandSender, amount: Int = 8): String {
+        if (!player.hasPermission("duplist.list")) {
+            return texts.onNoPermission()
+        }
+
         var i = 0
 
         val out = StringBuilder()
+        out.appendLine("${colors.getPrimaryColor()}Duplist: ")
 
         for (report in reports) {
             if (i == amount) {
                 break
             }
 
-            out.append(reportToString(report))
+            out.appendLine("${i}: ${reportToString(report)}")
 
             i++
         }
@@ -73,6 +161,21 @@ class DataManager(private val texts: Texts) {
     }
 
     private fun reportToString(r: Report): String {
-        return "${r.locX}/${r.locY}/${r.locZ} : ${r.reason}"
+        return "${r.reason} : ${r.value} @ ${r.locX.roundToLong()}/${r.locY.roundToLong()}/${r.locZ.roundToLong()} ${r.world}"
+    }
+
+    fun teleport(player: Player, index: Int): Boolean {
+        if (reports.count()>index) {
+            val reportData = reports[index]
+            val world = Bukkit.getWorld(reportData.world) ?: return false
+            val location = Location(world, reportData.locX, reportData.locY, reportData.locZ)
+            return player.teleport(location)
+        }
+
+        return false
+    }
+
+    fun reportCount(): Int {
+        return reports.size
     }
 }
