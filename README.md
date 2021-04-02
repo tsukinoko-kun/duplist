@@ -4,6 +4,8 @@ Minecraft Plugin
 
 Version: Bukkit 1.16.4
 
+[Download](https://github.com/Frank-Mayer/duplist/releases/latest)
+
 ## Commands:
 
 `/duplist del <index>` Eintrag an index Löschen
