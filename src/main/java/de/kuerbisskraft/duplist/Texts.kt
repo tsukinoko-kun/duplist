@@ -35,6 +35,9 @@ class Texts(private val colors: Colors) {
         if (player.hasPermission("duplist.tp")) {
             out.appendLine("${colors.getAccentColor()}teleport${colors.getPrimaryColor()}: Teleportiere dich zu den Koordinaten")
         }
+        if (player.hasPermission("duplist.del")) {
+            out.appendLine("${colors.getAccentColor()}del${colors.getPrimaryColor()}: Lösche einen Eintrag")
+        }
 
         return out.toString()
     }
