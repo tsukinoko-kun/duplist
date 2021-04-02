@@ -183,4 +183,19 @@ class DataManager(private val texts: Texts, private val colors: Colors) {
     fun reportCount(): Int {
         return reports.size
     }
+
+    fun delete(sender: CommandSender, index: Int): Boolean {
+        if (!sender.hasPermission("duplist.del")) {
+            sender.sendMessage(texts.onNoPermission())
+            return true
+        }
+
+        if (reports.size > index) {
+            reports.removeAt(index)
+            sender.sendMessage(texts.onDelete(index))
+            return true
+        }
+
+        return false
+    }
 }

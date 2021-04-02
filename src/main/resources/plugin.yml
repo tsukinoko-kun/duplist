@@ -14,11 +14,13 @@ commands:
 permissions:
   duplist.*:
     description: Volle Kontrolle der Duplist
+    default: op
     children:
       duplist.op: true
       duplist.list: true
       duplist.meldung: true
       duplist.tp: true
+      duplist.del: true
   duplist.op:
     description: Erlaubt bearbeiten von Rechten
     default: op
@@ -30,5 +32,8 @@ permissions:
     default: true
   duplist.tp:
     description: Teleportiere dich zu den Koordinaten
+    default: op
+  duplist.del:
+    description: Eintrag löschen
     default: op
 

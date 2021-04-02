@@ -69,6 +69,18 @@ class CmdInterpreter(
                 }
             }
 
+            "del" -> {
+                if (argsSize < 2) {
+                    sender.sendMessage(texts.onDeleteFailed())
+                    return false
+                }
+
+                val index = args[1].toIntOrNull()
+                if (index == null || !dataManager.delete(sender, index)) {
+                    sender.sendMessage(texts.onDeleteFailed())
+                }
+            }
+
             "permission" -> {
                 if (argsSize < 3) {
                     return false

@@ -15,7 +15,7 @@ class CmdTabComplete(private val texts: Texts, private val dataManager: DataMana
 
         when (args.size) {
             1 -> {
-                return mutableListOf("help", "melden", "list", "permission", "tp", "teleport")
+                return mutableListOf("permission", "del", "tp", "teleport", "list", "melden", "help")
             }
 
             2 -> {
@@ -36,7 +36,7 @@ class CmdTabComplete(private val texts: Texts, private val dataManager: DataMana
                         return ret
                     }
 
-                    "tp", "teleport" -> {
+                    "tp", "teleport", "del" -> {
                         val ret = mutableListOf<String>()
                         for (i in 0 until dataManager.reportCount()) {
                             ret.add(i.toString())

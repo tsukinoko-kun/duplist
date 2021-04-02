@@ -6,7 +6,7 @@ class Texts(private val colors: Colors) {
     private val _reasons: Array<String> = arrayOf("duper", "scammer", "ph-falle")
     fun reasons() = _reasons
 
-    private val _permissions: Array<String> = arrayOf("duplist.meldung", "duplist.list", "duplist.op", "duplist.tp")
+    private val _permissions: Array<String> = arrayOf("duplist.meldung", "duplist.list", "duplist.op", "duplist.tp", "duplist.del")
     fun permissions() = _permissions
 
     private val _onReportSuccessful: String =
@@ -44,4 +44,9 @@ class Texts(private val colors: Colors) {
 
     private val _teleportFailed: String = "${colors.getErrorColor()}Teleport fehlgeschlagen!"
     fun onTeleportFailed() = _teleportFailed
+
+    private val _onDeleteFailed: String = "${colors.getErrorColor()}Löschen fehlgeschlagen!"
+    fun onDeleteFailed() = _onDeleteFailed
+
+    fun onDelete(index: Int) = "${colors.getOkColor()}Eintrag an Index $index gelöscht"
 }
