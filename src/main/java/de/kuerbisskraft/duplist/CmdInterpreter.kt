@@ -59,7 +59,7 @@ class CmdInterpreter(
 
                     2 -> {
                         val index = args[1].toIntOrNull()
-                        return if (dataManager.teleport(sender as Player, index?:1)) {
+                        return if (dataManager.teleport(sender as Player, index ?: 1)) {
                             true
                         } else {
                             sender.sendMessage(texts.onTeleportFailed())
