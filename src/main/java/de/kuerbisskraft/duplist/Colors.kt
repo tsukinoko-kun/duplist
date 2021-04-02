@@ -21,6 +21,7 @@ class Colors {
             File(dir).mkdirs()
         }
 
+        // Load custom settings
         val file = File(filePath)
         if (file.exists()) {
             // Read File
@@ -35,11 +36,32 @@ class Colors {
                 settings[el.key] = el.value
             }
         }
-        else {
-            settings["primary"] = "${ChatColor.RESET}"
-            settings["accent"] = "${ChatColor.GREEN}"
-            settings["error"] = "${ChatColor.RED}"
 
+        // Add default values
+        var needToWrite = false
+        if (!settings.containsKey("Primary")) {
+            settings["primary"] = "${ChatColor.RESET}"
+            needToWrite = true
+        }
+        if (!settings.containsKey("accent")) {
+            settings["accent"] = "${ChatColor.GREEN}"
+            needToWrite = true
+        }
+        if (!settings.containsKey("accent1")) {
+            settings["accent1"] = "${ChatColor.YELLOW}"
+            needToWrite = true
+        }
+        if (!settings.containsKey("error")) {
+            settings["error"] = "${ChatColor.RED}"
+            needToWrite = true
+        }
+        if (!settings.containsKey("ok")) {
+            settings["ok"] = "${ChatColor.GOLD}"
+            needToWrite = true
+        }
+
+        // Store defaults
+        if (needToWrite) {
             // store defaults
             val json = gson.toJson(settings)
             val fw = FileWriter(filePath)
@@ -49,26 +71,34 @@ class Colors {
     }
 
     fun getPrimaryColor(): String {
-        if (settings.containsKey("primary")) {
-            return settings["primary"]!!
-        }
-
-        throw Exception("Primary Color not found")
+        return getColor("primary")
     }
 
     fun getAccentColor(): String {
-        if (settings.containsKey("accent")) {
-            return settings["accent"]!!
-        }
+        return getColor("accent")
+    }
 
-        throw Exception("Accent Color not found")
+    fun getSecondAccentColor(): String {
+        return getColor("accent1")
     }
 
     fun getErrorColor(): String {
-        if (settings.containsKey("error")) {
-            return settings["error"]!!
+        return getColor("error")
+    }
+
+    fun getOkColor(): String {
+        return getColor("ok")
+    }
+
+    private fun getColor(key: String): String {
+        if (settings.containsKey(key)) {
+            return settings[key]!!
         }
 
-        throw Exception("Error Color not found")
+        throw notFound(key)
+    }
+
+    private fun notFound(key: String): Exception {
+        return Exception("duplist.color.${key} not found, delete plugins/duplist/settings.json to restore defaults")
     }
 }

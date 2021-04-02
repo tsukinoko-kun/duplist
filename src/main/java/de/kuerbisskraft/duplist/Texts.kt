@@ -10,12 +10,12 @@ class Texts(private val colors: Colors) {
     fun permissions() = _permissions
 
     private val _onReportSuccessful: String =
-        "${colors.getPrimaryColor()}Danke, dass Du mit deiner Meldung dem Server geholfen hast!"
+        "${colors.getOkColor()}Danke, dass Du mit deiner Meldung dem Server geholfen hast!"
 
     fun onReportSuccessful() = _onReportSuccessful
 
     private val _onReportSyntaxError: String =
-        "${colors.getPrimaryColor()}Du musst die Koordinaten (X, Y, Z) mit dem Grund [${_reasons[0]}, ${_reasons[1]}, ${_reasons[2]}] und einem Wert angeben"
+        "${colors.getErrorColor()}Du musst die Koordinaten (X, Y, Z) mit dem Grund [${_reasons[0]}, ${_reasons[1]}, ${_reasons[2]}] und einem Wert angeben"
 
     fun onReportSyntaxError() = _onReportSyntaxError
 

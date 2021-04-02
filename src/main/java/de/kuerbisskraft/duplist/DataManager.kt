@@ -122,7 +122,14 @@ class DataManager(private val texts: Texts, private val colors: Colors) {
         return false
     }
 
-    private fun report(locX: Double, locY: Double, locZ: Double, reason: String, value: Double, world: String): Boolean {
+    private fun report(
+        locX: Double,
+        locY: Double,
+        locZ: Double,
+        reason: String,
+        value: Double,
+        world: String
+    ): Boolean {
         if (reports.add(
                 Report(
                     locX, locY, locZ, reason, value, world
@@ -142,26 +149,30 @@ class DataManager(private val texts: Texts, private val colors: Colors) {
             return texts.onNoPermission()
         }
 
-        var i = 0
 
         val out = StringBuilder()
         out.appendLine("${colors.getPrimaryColor()}Duplist: ")
 
-        for (report in reports) {
-            if (i == amount) {
-                break
+        if (reports.isEmpty()) {
+            out.appendLine("${colors.getErrorColor()}leer")
+        } else {
+            var i = 0
+            for (report in reports) {
+                if (i == amount) {
+                    break
+                }
+
+                out.appendLine("${colors.getSecondAccentColor()}${i}${colors.getAccentColor()}: ${reportToString(report)}")
+
+                i++
             }
-
-            out.appendLine("${i}: ${reportToString(report)}")
-
-            i++
         }
 
         return out.toString()
     }
 
     private fun reportToString(r: Report): String {
-        return "${r.reason} : ${r.value} @ ${r.locX.roundToLong()}/${r.locY.roundToLong()}/${r.locZ.roundToLong()} ${r.world}"
+        return "${r.world} : ${r.reason} @ ${r.locX.roundToLong()}/${r.locY.roundToLong()}/${r.locZ.roundToLong()} : ${r.value}"
     }
 
     fun teleport(player: Player, index: Int): Boolean {
@@ -170,7 +181,7 @@ class DataManager(private val texts: Texts, private val colors: Colors) {
             return true
         }
 
-        if (reports.count()>index) {
+        if (reports.count() > index) {
             val reportData = reports[index]
             val world = Bukkit.getWorld(reportData.world) ?: return false
             val location = Location(world, reportData.locX, reportData.locY, reportData.locZ)
