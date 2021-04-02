@@ -4,7 +4,7 @@ Minecraft Plugin
 
 Version: Bukkit 1.16.4
 
-Commands:
+## Commands:
 
 `/duplist del <index>` Eintrag an index Löschen
 
@@ -21,3 +21,11 @@ Commands:
 `/duplist teleport <index>` Teleportiere dich zur Position am angegebenen Index
 
 `/duplist tp <index>` Teleportiere dich zur Position am angegebenen Index
+
+## Einstellungen
+
+plugins/duplist/settings.json enthält die Farbcodes, welche für die Ausgabe verwendet werden. Diese Codes können bearbeitet werden. (Kombinationen sind möglich)
+
+## Speicher
+
+Alle Meldungen werden in plugins/duplist/reports.json gespeichert
