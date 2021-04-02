@@ -6,6 +6,10 @@ Version: Bukkit 1.16.4
 
 [Download](https://github.com/Frank-Mayer/duplist/releases/latest)
 
+## Beschreibung
+
+Melde die Verwendung von Duplikationsglitches
+
 ## Commands:
 
 `/duplist del <index>` Eintrag an index Löschen
