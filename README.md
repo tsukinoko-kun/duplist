@@ -1,5 +1,8 @@
 # duplist
 
+| :information_source: This is a commissioned work |
+|--------------------------------------------------|
+
 Minecraft Plugin
 
 Version: Bukkit 1.16.4
